@@ -1,0 +1,28 @@
+class Node:
+def __init__(self, point, left=None, right=None):
+self.point = point self.left = left self.right = right
+class KDTree:
+def __init__(self, k):
+self.k = k self.root = None
+def insert(self, point):
+def insert_helper(node, point, depth):
+if node is None:
+return Node(point)
+dim = depth % self.k
+if point[dim] < node.point[dim]:
+node.left = insert_helper(node.left, point, depth+1) else:
+node.right = insert_helper(node.right, point, depth+1) return node
+self.root = insert_helper(self.root, point, 0)
+
+def range(self, min_coords, max_coords):
+def range_helper(node, min_coords, max_coords, depth):
+if node is None: return []
+results = []
+dim = depth % self.k
+if min_coords[dim] <= node.point[dim] <= max_coords[dim]:
+results.append(node.point)
+if min_coords[dim] <= node.point[dim]:
+results.extend(range_helper(node.left, min_coords, max_coords, depth+1))
+if node.point[dim] <= max_coords[dim]: results.extend(range_helper(node.right, min_coords, max_coords, depth+1))
+return results
+return range_helper(self.root, min_coords, max_coords, 0)
