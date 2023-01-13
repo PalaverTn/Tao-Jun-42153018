@@ -1,0 +1,24 @@
+def nearest(self, point: Point, node=None, best=None):
+        if node is None:
+            node = self._root
+        if node is None:
+            return best
+        if best is None:
+            best = (node.location, self.distance(point, node.location))
+        else:
+            dist = self.distance(point, node.location)
+            if dist < best[1]:
+                best = (node.location, dist)
+
+        dimension = depth % 2
+        if point[dimension] < node.location[dimension]:
+            near_subtree = node.left
+            far_subtree = node.right
+        else:
+            near_subtree = node.right
+            far_subtree = node.left
+
+        best = self.nearest(point, near_subtree, best)
+        if far_subtree is not None and best[1] > abs(point[dimension] - node.location[dimension]):
+            best = self.nearest(point, far_subtree, best:
+        return best[0]
